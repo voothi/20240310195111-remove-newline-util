@@ -8,6 +8,15 @@ def get_clipboard_text():
 def set_clipboard_text(text):
     pyperclip.copy(text)
 
+def clean_text(text):
+    # Удаляем HTML теги
+    cleaned_text = re.sub(r'<[^<]+?>', '', text)
+    # Удаляем специальные символы типа &nbsp;
+    cleaned_text = re.sub(r'&\w+;', '', cleaned_text)
+    # Удаляем непечатаемые символы
+    cleaned_text = re.sub(r'[\x00-\x1F\x7F-\x9F]', '', cleaned_text)
+    return cleaned_text
+
 def combine_clipboard_text():
     clipboard_content = get_clipboard_text()
     # Объединяем строки и удаляем переносы строк
@@ -15,14 +24,15 @@ def combine_clipboard_text():
     return combined_text
 
 def main():
-    parser = argparse.ArgumentParser(description="Combine and remove line breaks from clipboard content.")
+    parser = argparse.ArgumentParser(description="Combine and clean clipboard content.")
     args = parser.parse_args()
 
     clipboard_content = combine_clipboard_text()
-    set_clipboard_text(clipboard_content)
+    cleaned_content = clean_text(clipboard_content)
+    set_clipboard_text(cleaned_content)
 
-    print("Clipboard content after combining and removing line breaks:")
-    print(clipboard_content)
+    print("Clipboard content after combining, cleaning, and removing line breaks:")
+    print(cleaned_content)
 
 if __name__ == "__main__":
     main()
