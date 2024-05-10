@@ -9,9 +9,18 @@ def set_clipboard_text(text):
     pyperclip.copy(text)
 
 def clean_text(text):
+    # Обработка случая, когда &nbsp; и <br> стоят вместе
+    cleaned_text = re.sub(r'&nbsp;(<br>|<br>&nbsp;)', ' ', text)
+    cleaned_text = re.sub(r'(<br>&nbsp;|<br>)&nbsp;', ' ', cleaned_text)
+    # Добавляем пробел, если рядом с <br> нет другого пробела
+    cleaned_text = re.sub(r'(?<=<br>)(?!\s)', ' ', cleaned_text)
     # Удаляем HTML теги
-    cleaned_text = re.sub(r'<[^<]+?>', '', text)
+    cleaned_text = re.sub(r'<[^<]+?>', '', cleaned_text)
+    # Добавляем пробел, если рядом с &nbsp нет другого пробела
+    cleaned_text = re.sub(r'(?<=&nbsp;)(?!\s)', ' ', cleaned_text)
     # Удаляем специальные символы типа &nbsp;
+    # cleaned_text = re.sub(r'&nbsp;', ' ', cleaned_text)
+    # Удаляем специальные символы;
     cleaned_text = re.sub(r'&\w+;', '', cleaned_text)
     # Удаляем непечатаемые символы
     cleaned_text = re.sub(r'[\x00-\x1F\x7F-\x9F]', '', cleaned_text)
