@@ -8,19 +8,21 @@ def get_clipboard_text():
 def set_clipboard_text(text):
     pyperclip.copy(text)
 
-def remove_newlines(text):
-    return re.sub(r'\n', '', text)
+def combine_clipboard_text():
+    clipboard_content = get_clipboard_text()
+    # Объединяем строки и удаляем переносы строк
+    combined_text = ' '.join(clipboard_content.splitlines())
+    return combined_text
 
 def main():
-    parser = argparse.ArgumentParser(description="Remove line breaks from clipboard content.")
+    parser = argparse.ArgumentParser(description="Combine and remove line breaks from clipboard content.")
     args = parser.parse_args()
 
-    clipboard_content = get_clipboard_text()
-    clipboard_content_without_newlines = remove_newlines(clipboard_content)
-    set_clipboard_text(clipboard_content_without_newlines)
+    clipboard_content = combine_clipboard_text()
+    set_clipboard_text(clipboard_content)
 
-    print("Clipboard content after removing line breaks:")
-    print(clipboard_content_without_newlines)
+    print("Clipboard content after combining and removing line breaks:")
+    print(clipboard_content)
 
 if __name__ == "__main__":
     main()
