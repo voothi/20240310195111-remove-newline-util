@@ -24,6 +24,8 @@ def clean_text(text):
     cleaned_text = re.sub(r'[\x00-\x1F\x7F-\x9F]', '', cleaned_text)
     # Replace multiple spaces with a single space
     cleaned_text = re.sub(r'\s{2,}', ' ', cleaned_text)
+    # Remove space before punctuation marks
+    cleaned_text = re.sub(r'\s+([:;,.!?])', r'\1', cleaned_text)
     return cleaned_text
 
 def combine_clipboard_text():
