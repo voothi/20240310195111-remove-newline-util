@@ -26,6 +26,8 @@ def clean_text(text):
     cleaned_text = re.sub(r'\s{2,}', ' ', cleaned_text)
     # Remove space before punctuation marks
     cleaned_text = re.sub(r'\s+([:;,.!?])', r'\1', cleaned_text)
+    # Remove trailing whitespace
+    cleaned_text = cleaned_text.strip()
     return cleaned_text
 
 def combine_clipboard_text():
