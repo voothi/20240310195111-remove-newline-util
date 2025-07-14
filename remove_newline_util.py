@@ -3,65 +3,65 @@ import pyperclip
 import re
 
 def get_clipboard_text():
-    """Получает текст из буфера обмена."""
+    """Gets text from the clipboard."""
     return pyperclip.paste()
 
 def set_clipboard_text(text):
-    """Помещает текст в буфер обмена."""
+    """Puts text into the clipboard."""
     pyperclip.copy(text)
 
 def clean_text(text):
     """
-    Очищает текст: обрабатывает переносы слов, удаляет HTML-теги,
-    лишние пробелы и другие ненужные символы.
+    Cleans the text: handles word hyphenation, removes HTML tags,
+    extra spaces, and other unnecessary characters.
     """
-    # 1. Обрабатываем перенос слов с дефисом.
-    # Эта команда ищет дефис, за которым могут следовать пробелы и перенос строки,
-    # и удаляет их, соединяя части слова.
-    # Пример: "betre-\n ten" станет "betreten".
+    # 1. Handle hyphenated word breaks.
+    # This command looks for a hyphen followed by optional whitespace and a newline,
+    # and removes them, joining the parts of the word.
+    # Example: "betre-\n ten" will become "betreten".
     cleaned_text = re.sub(r'-\s*\n\s*', '', text)
 
-    # 2. Заменяем оставшиеся переносы строк на пробелы.
-    # Это объединит строки, которые не были частью переноса слова.
+    # 2. Replace remaining newlines with spaces.
+    # This will join lines that were not part of a word break.
     cleaned_text = re.sub(r'\n', ' ', cleaned_text)
     
-    # 3. Далее идут ваши оригинальные правила очистки.
-    # Обработка случаев, когда   и <br> появляются вместе
+    # 3. The following are your original cleaning rules.
+    # Handle cases where   and <br> appear together
     cleaned_text = re.sub(r' (<br>|<br> )', ' ', cleaned_text)
     cleaned_text = re.sub(r'(<br> |<br>) ', ' ', cleaned_text)
-    # Добавляем пробел, если после <br> нет другого пробела
+    # Add a space if there's no other space next to <br>
     cleaned_text = re.sub(r'(?<=<br>)(?!\s)', ' ', cleaned_text)
-    # Удаление HTML-тегов
+    # Remove HTML tags
     cleaned_text = re.sub(r'<[^<]+?>', '', cleaned_text)
-    # Добавляем пробел, если после   нет другого пробела
+    # Add a space if there's no other space next to  
     cleaned_text = re.sub(r'(?<= )(?!\s)', ' ', cleaned_text)
-    # Удаление специальных символов
+    # Remove special symbols
     cleaned_text = re.sub(r'&\w+;', '', cleaned_text)
-    # Удаление непечатаемых символов
+    # Remove non-printable characters
     cleaned_text = re.sub(r'[\x00-\x1F\x7F-\x9F]', '', cleaned_text)
-    # Замена нескольких пробелов одним
+    # Replace multiple spaces with a single space
     cleaned_text = re.sub(r'\s{2,}', ' ', cleaned_text)
-    # Удаление пробелов перед знаками препинания
+    # Remove space before punctuation marks
     cleaned_text = re.sub(r'\s+([:;,.!?])', r'\1', cleaned_text)
-    # Удаление пробелов в начале и конце строки
+    # Remove leading/trailing whitespace
     cleaned_text = cleaned_text.strip()
     
     return cleaned_text
 
 def main():
-    parser = argparse.ArgumentParser(description="Объединение и очистка содержимого буфера обмена.")
+    parser = argparse.ArgumentParser(description="Combine and clean clipboard content.")
     args = parser.parse_args()
     
-    # Получаем оригинальный текст из буфера обмена
+    # Get the original text from the clipboard
     clipboard_content = get_clipboard_text()
     
-    # Передаем его напрямую в обновленную функцию очистки
+    # Pass it directly to the updated cleaning function
     cleaned_content = clean_text(clipboard_content)
     
-    # Копируем результат обратно в буфер обмена
+    # Copy the result back to the clipboard
     set_clipboard_text(cleaned_content)
     
-    print("Содержимое буфера обмена после объединения, очистки и удаления переносов строк:")
+    print("Clipboard content after combining, cleaning, and removing line breaks:")
     print(cleaned_content)
 
 if __name__ == "__main__":
