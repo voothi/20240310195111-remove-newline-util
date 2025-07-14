@@ -25,7 +25,7 @@ def clean_text(text):
     # Replace multiple spaces with a single space
     cleaned_text = re.sub(r'\s{2,}', ' ', cleaned_text)
     # Combine words split by hyphen and line break
-    cleaned_text = re.sub(r'\b-(\s*\n?\s*)(\w)', lambda m: m.group(2), cleaned_text)
+    cleaned_text = re.sub(r'-\s*\n\s*', '', cleaned_text)
     # Remove space before punctuation marks
     cleaned_text = re.sub(r'\s+([:;,.!?])', r'\1', cleaned_text)
     # Remove trailing whitespace
