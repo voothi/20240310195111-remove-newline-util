@@ -7,3 +7,5 @@
 - **Feature**: **HTML & Symbol Removal**. Strips HTML tags (`<br>`, `<div>`, etc.) and special character entities.
 - **Feature**: **Whitespace Optimization**. Normalizes multiple spaces and removes redundant spaces before punctuation marks.
 - **Feature**: **Clipboard Integration**. Seamlessly reads from and writes back to the system clipboard.
+- **Feature**: **AutoHotkey v2 Integration**. Added support for seamless "Copy-Process-Paste" workflow via `remove-newline.ahk`.
+- **Feature**: **Python Execution**. Optimized for direct execution via Python interpreter for integration workflows.

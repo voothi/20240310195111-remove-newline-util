@@ -10,6 +10,7 @@ A lightweight utility for cleaning and formatting text from the clipboard, speci
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
+- [AutoHotkey Integration](#autohotkey-integration)
 - [Kardenwort](#kardenwort)
 - [License](#license)
 
@@ -50,12 +51,28 @@ You can find pre-built executables in the `dist/` folder or under the Releases s
 ## Usage
 
 1. **Copy** the messy text to your clipboard.
-2. **Execute** `remove_newline_util.exe` (or the script).
+2. **Execute** the script using Python:
+   ```powershell
+   python u:\voothi\20240310195111-remove-newline-util\remove_newline_util.py
+   ```
+   *Note: You can also use the standalone `remove_newline_util.exe` if preferred.*
 3. **Paste** the cleaned text into your destination.
 
 The terminal will display the cleaned content for quick verification.
 
 [Return to Top](#remove-newline-utility)
+
+## AutoHotkey Integration
+
+For a more seamless workflow, you can use the **[remove-newline.ahk](https://github.com/voothi/20240411110510-autohotkey/blob/main/remove-newline.ahk)** script. 
+
+This script maps the process to `Ctrl + Alt + N` (^!N), performing the following steps automatically:
+1. **Copies** the currently selected text.
+2. **Processes** it through the Python script.
+3. **Pastes** the cleaned text back into your active window.
+
+> [!IMPORTANT]
+> You must update the paths in the `RunWait` command within the `.ahk` script to match your local installation of Python and the location of `remove_newline_util.py`.
 
 ## Kardenwort Ecosystem
 
