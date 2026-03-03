@@ -1,0 +1,12 @@
+[Cleaning]
+# Characters used for hyphenation. Special characters like ¬ should be included.
+# Default: -¬
+hyphenation_marks = -¬
+
+# Whether to join hyphenated words even if they are on the same line (common in some OCR)
+# Default: true
+join_same_line_hyphens = true
+
+# Whether to collapse multiple spaces into one
+# Default: true
+collapse_multiple_spaces = true
