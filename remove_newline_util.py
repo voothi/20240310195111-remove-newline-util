@@ -16,10 +16,14 @@ def clean_text(text):
     extra spaces, and other unnecessary characters.
     """
     # 1. Handle hyphenated word breaks.
-    # This command looks for a hyphen followed by optional whitespace and a newline,
+    # This command looks for a hyphen or logical negation symbol (¬) followed by optional whitespace and a newline,
     # and removes them, joining the parts of the word.
-    # Example: "betre-\n ten" will become "betreten".
-    cleaned_text = re.sub(r'-\s*\n\s*', '', text)
+    # Example: "betre-\n ten" or "leuch¬ \n tet" will become "betreten" or "leuchtet".
+    cleaned_text = re.sub(r'[-\u00ac]\s*\n\s*', '', text)
+    
+    # Also handle the case where the symbol is present but followed by a space on the same line,
+    # if it's clearly intended as a hyphen (common in some PDF extractions).
+    cleaned_text = re.sub(r'[-\u00ac]\s+', '', cleaned_text)
 
     # 2. Replace remaining newlines with spaces.
     # This will join lines that were not part of a word break.
