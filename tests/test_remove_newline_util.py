@@ -56,5 +56,33 @@ class TestRemoveNewlineUtil(unittest.TestCase):
         self.assertIn("stammende", cleaned)
         self.assertNotIn("¬", cleaned)
 
+    def test_custom_hyphenation_mark(self):
+        """Tests that custom hyphenation marks from config are respected."""
+        config = {
+            'hyphenation_marks': '*',
+            'join_same_line_hyphens': True,
+            'collapse_multiple_spaces': True
+        }
+        # Same line
+        self.assertEqual(clean_text("word* test", config), "wordtest")
+        # Newline
+        self.assertEqual(clean_text("word*\ntest", config), "wordtest")
+        # Ensure default marks don't work if overridden
+        self.assertIn("-", clean_text("word- test", config))
+
+    def test_toggle_features(self):
+        """Tests toggling space collapse and same-line joining."""
+        config = {
+            'hyphenation_marks': '-',
+            'join_same_line_hyphens': False,
+            'collapse_multiple_spaces': False
+        }
+        # Should NOT join on same line
+        self.assertEqual(clean_text("word- test", config), "word- test")
+        # Should join on newline (this is always done by Rule 1, just using marks)
+        self.assertEqual(clean_text("word-\ntest", config), "wordtest")
+        # Should NOT collapse spaces
+        self.assertEqual(clean_text("extra   space", config), "extra   space")
+
 if __name__ == '__main__':
     unittest.main()

@@ -1,4 +1,12 @@
 
+## v1.1.0 (2026-03-03)
+**External Configuration Support**
+
+- **Feature**: **`config.ini` Support**. Introduced an external configuration file for customizing cleaning behavior.
+- **Improvement**: **Configurable Hyphenation Marks**. Users can now specify which characters are treated as hyphens via the `hyphenation_marks` setting.
+- **Improvement**: **Feature Toggles**. Added ability to toggle same-line hyphen joining and multiple space collapsing.
+- **Internal**: Refactored `clean_text` to be configuration-driven and expanded unit tests to verify dynamic settings.
+
 ## v1.0.2 (2026-03-03)
 **Enhanced Hyphenation & Testing**
 

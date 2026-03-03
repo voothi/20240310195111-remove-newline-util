@@ -1,6 +1,6 @@
 # Remove Newline Utility
 
-[![Version](https://img.shields.io/badge/version-v1.0.2-blue)](https://github.com/voothi/20240310195111-remove-newline-util)
+[![Version](https://img.shields.io/badge/version-v1.1.0-blue)](https://github.com/voothi/20240310195111-remove-newline-util)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A lightweight utility for cleaning and formatting text from the clipboard, specifically designed to fix issues with line breaks and hyphenated words in copied text.
@@ -45,6 +45,33 @@ A lightweight utility for cleaning and formatting text from the clipboard, speci
 
 ### Standalone Executable
 You can find pre-built executables in the `dist/` folder or under the Releases section.
+
+[Return to Top](#remove-newline-utility)
+
+## Configuration
+
+The utility can be customized using a `config.ini` file located in the same directory as the script.
+
+### Default `config.ini`
+```ini
+[Cleaning]
+# Characters used for hyphenation. Special characters like ¬ should be included.
+# Default: -¬
+hyphenation_marks = -¬
+
+# Whether to join hyphenated words even if they are on the same line (common in some OCR)
+# Default: true
+join_same_line_hyphens = true
+
+# Whether to collapse multiple spaces into one
+# Default: true
+collapse_multiple_spaces = true
+```
+
+### Parameters
+- **hyphenation_marks**: A string of characters that the utility treats as hyphens when they are followed by optional whitespace and a newline (or space, if `join_same_line_hyphens` is true).
+- **join_same_line_hyphens**: If `true`, the utility will join words split by hyphenation marks even if they are not followed by a newline.
+- **collapse_multiple_spaces**: If `true`, sequences of two or more spaces are reduced to a single space.
 
 [Return to Top](#remove-newline-utility)
 
