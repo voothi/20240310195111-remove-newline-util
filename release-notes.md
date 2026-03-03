@@ -1,4 +1,11 @@
 
+## v1.0.2 (2026-03-03)
+**Enhanced Hyphenation & Testing**
+
+- **Feature**: **Support for `¬ ` Hyphenation**. Added support for the logical negation symbol (`¬`) common in OCR text. Now handles sequences like `leuch¬ tet` or `leuch¬\ntet`.
+- **Feature**: **Unit Test Suite**. Established a formal testing framework in `tests/` to ensure reliability and prevent regressions in cleaning logic.
+- **Improvement**: Optimized internal regex to consistently handle whitespace around hyphenation points.
+
 ## v1.0.0 (2026-01-01)
 **Initial Release**
 

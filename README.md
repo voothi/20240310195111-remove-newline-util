@@ -1,6 +1,6 @@
 # Remove Newline Utility
 
-[![Version](https://img.shields.io/badge/version-v1.0.0-blue)](https://github.com/voothi/20240310195111-remove-newline-util)
+[![Version](https://img.shields.io/badge/version-v1.0.2-blue)](https://github.com/voothi/20240310195111-remove-newline-util)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A lightweight utility for cleaning and formatting text from the clipboard, specifically designed to fix issues with line breaks and hyphenated words in copied text.
