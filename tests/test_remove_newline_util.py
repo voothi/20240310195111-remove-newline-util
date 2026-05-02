@@ -84,5 +84,37 @@ class TestRemoveNewlineUtil(unittest.TestCase):
         # Should NOT collapse spaces
         self.assertEqual(clean_text("extra   space", config), "extra   space")
 
+    def test_german_compositional_hyphens(self):
+        """Tests that German compositional hyphens (e.g. 'Luft- und') are preserved."""
+        # Same line
+        self.assertEqual(clean_text("Luft- und Seefracht"), "Luft- und Seefracht")
+        self.assertEqual(clean_text("Ein- oder Ausstieg"), "Ein- oder Ausstieg")
+        self.assertEqual(clean_text("See-, Luft- sowie Landfracht"), "See-, Luft- sowie Landfracht")
+        self.assertEqual(clean_text("Hin- bzw. Rückfahrt"), "Hin- bzw. Rückfahrt")
+        
+        # Newline
+        self.assertEqual(clean_text("Luft-\nund Seefracht"), "Luft- und Seefracht")
+        self.assertEqual(clean_text("Ein-\noder Ausstieg"), "Ein- oder Ausstieg")
+        self.assertEqual(clean_text("See-, Luft-\nsowie Landfracht"), "See-, Luft- sowie Landfracht")
+
+    def test_dash_and_range_preservation(self):
+        """Tests that standalone dashes and certain ranges are not collapsed."""
+        # Standalone dash (preceded by space)
+        self.assertEqual(clean_text("Value - Test"), "Value - Test")
+        
+        # Range with 'bis' (German for 'to')
+        self.assertEqual(clean_text("10- bis 20 Uhr"), "10- bis 20 Uhr")
+        self.assertEqual(clean_text("10-\nbis 20 Uhr"), "10- bis 20 Uhr")
+
+    def test_mixed_hyphenation(self):
+        """Tests a mix of word splitting and compositional hyphens."""
+        text = "See-, Luft- und Land- \n transport sowie Hy- \n phenation."
+        # See-, Luft- und -> preserved (compositional)
+        # Land- \n transport -> joined (word split)
+        # Hy- \n phenation -> joined (word split)
+        # Note: clean_text removes space before punctuation like '.'
+        result = clean_text(text)
+        self.assertEqual(result, "See-, Luft- und Landtransport sowie Hyphenation.")
+
 if __name__ == '__main__':
     unittest.main()
