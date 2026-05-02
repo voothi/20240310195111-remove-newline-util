@@ -48,12 +48,18 @@ def clean_text(text, config=None):
     # 1. Handle hyphenated word breaks.
     # This command looks for a hyphen/configured mark followed by optional whitespace and a newline,
     # and removes them, joining the parts of the word.
-    cleaned_text = re.sub(fr'[{marks}]\s*\n\s*', '', text)
+    # Refinement: If followed by common German conjunctions, it's likely a compositional hyphen.
+    # In those cases, we keep the hyphen and add a space instead of joining.
+    conjunctions = r'(?:und|oder|sowie|bzw|bis)'
+    cleaned_text = re.sub(fr'((?<!\s)[{marks}])\s*\n\s*(?={conjunctions}\b)', r'\1 ', text)
+    cleaned_text = re.sub(fr'[{marks}]\s*\n\s*', '', cleaned_text)
     
     # Also handle the case where the symbol is present but followed by a space on the same line,
     # if it's clearly intended as a hyphen (common in some PDF extractions).
     if config['join_same_line_hyphens']:
-        cleaned_text = re.sub(fr'[{marks}]\s+', '', cleaned_text)
+        # Refinement: Don't join if preceded by a space (likely a dash) 
+        # or followed by a common conjunction (German compositional hyphen).
+        cleaned_text = re.sub(fr'(?<!\s)[{marks}]\s+(?!{conjunctions}\b)', '', cleaned_text)
 
     # 2. Replace remaining newlines with spaces.
     # This will join lines that were not part of a word break.
