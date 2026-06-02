@@ -51,8 +51,8 @@ def clean_text(text, config=None):
     # Refinement: If followed by common German conjunctions, it's likely a compositional hyphen.
     # In those cases, we keep the hyphen and add a space instead of joining.
     conjunctions = r'(?:und|oder|sowie|bzw|bis)'
-    cleaned_text = re.sub(fr'((?<!\s)[{marks}])\s*\n\s*(?={conjunctions}\b)', r'\1 ', text)
-    cleaned_text = re.sub(fr'[{marks}]\s*\n\s*', '', cleaned_text)
+    cleaned_text = re.sub(fr'((?<!\s)[{marks}])\s*\r?\n\s*(?={conjunctions}\b)', r'\1 ', text)
+    cleaned_text = re.sub(fr'[{marks}]\s*\r?\n\s*', '', cleaned_text)
     
     # Also handle the case where the symbol is present but followed by a space on the same line,
     # if it's clearly intended as a hyphen (common in some PDF extractions).
@@ -63,7 +63,7 @@ def clean_text(text, config=None):
 
     # 2. Replace remaining newlines with spaces.
     # This will join lines that were not part of a word break.
-    cleaned_text = re.sub(r'\n', ' ', cleaned_text)
+    cleaned_text = re.sub(r'\r?\n', ' ', cleaned_text)
     
     # 3. The following are original cleaning rules.
     # Handle cases where   and <br> appear together
