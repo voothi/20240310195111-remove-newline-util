@@ -9,7 +9,8 @@ def load_config():
     config = {
         'hyphenation_marks': '-¬',
         'join_same_line_hyphens': True,
-        'collapse_multiple_spaces': True
+        'collapse_multiple_spaces': True,
+        'normalize_bracket_spacing': True
     }
     
     config_file = os.path.join(os.path.dirname(__file__), 'config.ini')
@@ -22,6 +23,7 @@ def load_config():
                 config['hyphenation_marks'] = section.get('hyphenation_marks', config['hyphenation_marks'])
                 config['join_same_line_hyphens'] = section.getboolean('join_same_line_hyphens', config['join_same_line_hyphens'])
                 config['collapse_multiple_spaces'] = section.getboolean('collapse_multiple_spaces', config['collapse_multiple_spaces'])
+                config['normalize_bracket_spacing'] = section.getboolean('normalize_bracket_spacing', config['normalize_bracket_spacing'])
         except Exception as e:
             print(f"Warning: Could not read config.ini: {e}")
             
@@ -86,6 +88,10 @@ def clean_text(text, config=None):
         
     # Remove space before punctuation marks
     cleaned_text = re.sub(r'\s+([:;,.!?])', r'\1', cleaned_text)
+    # Remove space inside brackets
+    if config.get('normalize_bracket_spacing', True):
+        cleaned_text = re.sub(r'([(\[{])\s+', r'\1', cleaned_text)
+        cleaned_text = re.sub(r'\s+([)\]}])', r'\1', cleaned_text)
     # Remove leading/trailing whitespace
     cleaned_text = cleaned_text.strip()
     

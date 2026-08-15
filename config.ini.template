@@ -10,3 +10,8 @@ join_same_line_hyphens = true
 # Whether to collapse multiple spaces into one
 # Default: true
 collapse_multiple_spaces = true
+
+# Whether to normalize inner whitespace in brackets: (...), [...], {...}
+# Default: true
+normalize_bracket_spacing = true
+

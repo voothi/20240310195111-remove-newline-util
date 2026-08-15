@@ -39,6 +39,12 @@ class TestRemoveNewlineUtil(unittest.TestCase):
         self.assertEqual(clean_text("Hello ."), "Hello.")
         self.assertEqual(clean_text("Hello ! "), "Hello!")
 
+    def test_bracket_spacing(self):
+        """Tests that spaces inside opening/closing brackets are removed."""
+        self.assertEqual(clean_text("spec ( openspec/spec.md ) All"), "spec (openspec/spec.md) All")
+        self.assertEqual(clean_text("Item [ 123 ] done"), "Item [123] done")
+        self.assertEqual(clean_text("Block { code } end"), "Block {code} end")
+
     def test_full_sample(self):
         """Tests the full sample text provided by the user."""
         test_text = (
@@ -83,6 +89,14 @@ class TestRemoveNewlineUtil(unittest.TestCase):
         self.assertEqual(clean_text("word-\ntest", config), "wordtest")
         # Should NOT collapse spaces
         self.assertEqual(clean_text("extra   space", config), "extra   space")
+        # Should NOT normalize bracket spaces when disabled
+        config_no_bracket = {
+            'hyphenation_marks': '-',
+            'join_same_line_hyphens': False,
+            'collapse_multiple_spaces': False,
+            'normalize_bracket_spacing': False
+        }
+        self.assertEqual(clean_text("test ( space )", config_no_bracket), "test ( space )")
 
     def test_german_compositional_hyphens(self):
         """Tests that German compositional hyphens (e.g. 'Luft- und') are preserved."""
